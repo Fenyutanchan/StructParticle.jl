@@ -1,0 +1,4 @@
+name = "StructParticle"
+uuid = "ba31282d-ba71-4615-a5c1-2453621d5387"
+authors = ["Quan-feng WU <wuquanfeng@ihep.ac.cn>"]
+version = "0.1.0"
