@@ -1,9 +1,9 @@
 module StructParticle
 
-export  AbstractParticle
-export  Particle, Jet
-export  Event
+    export  AbstractParticle
+    export  Particle, Jet
+    export  Event
 
-include("Particle.jl")
+    include("Particle.jl")
 
 end # module StructParticle
