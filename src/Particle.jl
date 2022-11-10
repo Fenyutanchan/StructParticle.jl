@@ -1,6 +1,3 @@
-# import  Base.zero
-import  Base.Dict
-
 abstract type AbstractParticle end
 
 struct Particle <: AbstractParticle
@@ -23,36 +20,12 @@ struct Event
     Particles::Vector{<:AbstractParticle}
 end
 
-Dict(p::Particle)   =   Dict(
-    "PDGID"     =>  p.PDGID,
-    "Momentum"  =>  p.Momentum,
-    "Energy"    =>  p.Energy,
-    "Mass"      =>  p.Mass
-)
-Dict(j::Jet)        =   Dict(
-    "PDGID"     =>  j.PDGID,
-    "Momentum"  =>  j.Momentum,
-    "Energy"    =>  j.Energy,
-    "Mass"      =>  j.Mass,
-    "Particles" =>  Dict.(j.Particles)
-)
-Dict(e::Event)      =   Dict(
-    "Event_Weight"  =>  e.Event_Weight,
-    "Particles"     =>  Dict.(e.Particles)
-)
-
 Particle(p::Particle)   =   p
 Particle(j::Jet)        =   Particle(
     j.PDGID,
     j.Momentum,
     j.Energy,
     j.Mass
-)
-Particle(d::Dict)       =   Particle(
-    d["PDGID"],
-    d["Momentum"],
-    d["Energy"],
-    d["Mass"]
 )
 
 Jet(p::Particle)        =   Jet(
@@ -63,24 +36,6 @@ Jet(p::Particle)        =   Jet(
     [p]
 )
 Jet(j::Jet)             =   j
-Jet(d::Dict)            =   Jet(
-    d["PDGID"],
-    d["Momentum"],
-    d["Energy"],
-    d["Mass"],
-    Particle.(d["Particles"])
-)
-
-Dict_to_Particle_or_Jet(d::Dict)::AbstractParticle  =   if "Particles" ∈ keys(d)
-    return  Jet(d)
-else
-    return  Particle(d)
-end
-
-Event(d::Dict)  =   Event(
-    d["Event_Weight"],
-    Dict_to_Particle_or_Jet.(d["Particles"])
-)
 
 # zero(::AbstractParticle)    =   Particle(0, [0, 0, 0], 0, 0)
 # zero(::Particle)            =   Particle(0, [0, 0, 0], 0, 0)
