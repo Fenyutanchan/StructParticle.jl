@@ -1,5 +1,7 @@
 module StructParticle
 
+    using   JLD2
+
     export  AbstractParticle
     export  Particle, Jet
     export  Event
