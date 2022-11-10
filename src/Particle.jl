@@ -71,9 +71,15 @@ Jet(d::Dict)            =   Jet(
     Particle.(d["Particles"])
 )
 
+Dict_to_Particle_or_Jet(d::Dict)::AbstractParticle  =   if "Particles" ∈ keys(d)
+    return  Jet(d)
+else
+    return  Particle(d)
+end
+
 Event(d::Dict)  =   Event(
     d["Event_Weight"],
-    Particle.(d["Particles"])
+    Dict_to_Particle_or_Jet.(d["Particles"])
 )
 
 # zero(::AbstractParticle)    =   Particle(0, [0, 0, 0], 0, 0)
