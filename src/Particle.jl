@@ -12,7 +12,7 @@ struct Jet <: AbstractParticle
     Momentum::Vector{<:Real}
     Energy::Real
     Mass::Real
-    Particles::Vector{Particle}
+    Particles::Vector{<:AbstractParticle}
 end
 
 struct Event
