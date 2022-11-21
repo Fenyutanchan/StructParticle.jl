@@ -1,3 +1,4 @@
+abstract type AbstractEvent end
 abstract type AbstractParticle end
 
 struct Particle <: AbstractParticle
@@ -7,7 +8,7 @@ struct Particle <: AbstractParticle
     Mass::Real
 end
 
-struct Jet <: AbstractParticle
+struct Jet <: Union{AbstractEvent, AbstractParticle}
     PDGID::Union{Integer, Nothing}
     Momentum::Vector{<:Real}
     Energy::Real
@@ -15,7 +16,7 @@ struct Jet <: AbstractParticle
     Particles::Vector{Particle}
 end
 
-struct Event
+struct Event <: AbstractEvent
     Event_Weight::Real
     Particles::Vector{<:AbstractParticle}
 end
@@ -36,6 +37,11 @@ Jet(p::Particle)        =   Jet(
     [p]
 )
 Jet(j::Jet)             =   j
+
+Event(e::Event)         =   e
+
+AbstractEvent(j::Jet)   =   Jet(j)
+AbstractEvent(e::Event) =   Event(e)
 
 # zero(::AbstractParticle)    =   Particle(0, [0, 0, 0], 0, 0)
 # zero(::Particle)            =   Particle(0, [0, 0, 0], 0, 0)
