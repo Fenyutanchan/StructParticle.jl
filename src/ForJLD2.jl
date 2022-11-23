@@ -44,7 +44,7 @@ Event(d::Dict)  =   Event(
     Dict_to_Particle_or_Jet.(d["Particles"])
 )
 
-function read_events_JLD2(file_name::String, index::String)::Event
+function read_events_JLD2_old(file_name::String, index::String)::Event
     @assert splitext(file_name)[end] == ".jld2"
 
     jld_file    =   jldopen(file_name, "r")
@@ -56,10 +56,10 @@ function read_events_JLD2(file_name::String, index::String)::Event
     close(jld_file)
     return  event
 end
-read_events_JLD2(file_name::String, index::Int)::Event  =   read_events_JLD2(
+read_events_JLD2_old(file_name::String, index::Int)::Event  =   read_events_JLD2_old(
     file_name, "$index"
 )
-function read_events_JLD2(file_name::String)::Vector{Event}
+function read_events_JLD2_old(file_name::String)::Vector{Event}
     @assert splitext(file_name)[end] == ".jld2"
 
     jld_file    =   jldopen(file_name, "r")
@@ -70,7 +70,7 @@ function read_events_JLD2(file_name::String)::Vector{Event}
     return event_list
 end
 
-function write_events_JLD2(file_name::String, event_list::Vector{Event})::Nothing
+function write_events_JLD2_old(file_name::String, event_list::Vector{Event})::Nothing
     if splitext(file_name)[end] != ".jld2"
         file_name   *=  ".jld2"
     end
@@ -83,7 +83,7 @@ function write_events_JLD2(file_name::String, event_list::Vector{Event})::Nothin
     return  nothing
 end
 
-function write_events_JLD2_new(file_name::String, event_list::Vector{Event})::Nothing
+function write_events_JLD2(file_name::String, event_list::Vector{Event})::Nothing
     if splitext(file_name)[end] != ".jld2"
         file_name   *=  ".jld2"
     end
@@ -91,4 +91,14 @@ function write_events_JLD2_new(file_name::String, event_list::Vector{Event})::No
     file_content    =   Symbol.("Event_" .* string.(eachindex(event_list))) .=> event_list
     jldsave(file_name; file_content...)
     return  nothing
+end
+
+# read_events_JLD2(file_name::String, index::String)::Event   =   load(file_name, index)
+read_events_JLD2(file_name::String, index::Int)::Event      =   load(file_name, "Event_$index")
+function read_events_JLD2(file_name::String)::Vector{Event}
+    jld_keys    =   jldopen(file_name, "r") do jld_file
+        keys(jld_file)
+    end
+
+    return load.(file_name, jld_keys)
 end
