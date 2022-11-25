@@ -1,6 +1,7 @@
 module StructParticle
 
     using   JLD2
+    using   ProgressMeter
 
     export  AbstractParticle
     export  Particle, Jet

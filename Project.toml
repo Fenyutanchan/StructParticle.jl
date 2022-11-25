@@ -1,7 +1,8 @@
 name = "StructParticle"
 uuid = "ba31282d-ba71-4615-a5c1-2453621d5387"
 authors = ["Quan-feng WU <wuquanfeng@ihep.ac.cn>"]
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
 JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
+ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
