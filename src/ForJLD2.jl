@@ -21,3 +21,26 @@ function read_events_JLD2(file_name::String)::Vector{Event}
     end
     return  event_list
 end
+
+function write_jets_JLD2(file_name::String, jet_list::Vector{Jet})::Nothing
+    if splitext(file_name)[end] != ".jld2"
+        file_name   *=  ".jld2"
+    end
+
+    file_content    =   Symbol.("Jet_" .* string.(eachindex(jet_list))) .=> jet_list
+    jldsave(file_name; file_content...)
+    return  nothing
+end
+
+read_jets_JLD2(file_name::String, index::Int)::Jet      =   load(file_name, "Jet_$index")
+function read_jets_JLD2(file_name::String)::Vector{Jet}
+    jld_keys    =   jldopen(file_name, "r") do jld_file
+        keys(jld_file)
+    end
+
+    jet_list    =   Vector{Jet}(undef, length(jld_keys))
+    @showprogress for ii in eachindex(jld_keys)
+        jet_list[ii]    =   read_jets_JLD2(file_name, ii)
+    end
+    return  jet_list
+end
