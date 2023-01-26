@@ -4,11 +4,16 @@ function write_events_JLD2(file_name::String, event_list::Vector{Event})::Nothin
     end
 
     # file_content    =   Symbol.("Event_" .* string.(eachindex(event_list))) .=> event_list
-    file_content    =   [
-        Symbol("Event_$ii") => event_list[ii]
-        for ii ∈ eachindex(event_list)
-    ]
-    jldsave(file_name; file_content...)
+    # file_content    =   [
+    #     Symbol("Event_$ii") => event_list[ii]
+    #     for ii ∈ eachindex(event_list)
+    # ]
+    # jldsave(file_name; file_content...)
+    jldopen(file_name, "w+") do f
+        @showprogress for ii ∈ eachindex(event_list)
+            f["Event_$ii"]  =   event_list[ii]
+        end
+    end
     return  nothing
 end
 
@@ -32,11 +37,17 @@ function write_jets_JLD2(file_name::String, jet_list::Vector{Jet})::Nothing
     end
 
     # file_content    =   Symbol.("Jet_" .* string.(eachindex(jet_list))) .=> jet_list
-    file_content    =   [
-        Symbol("Jet_$ii") => jet_list[ii]
-        for ii ∈ eachindex(jet_list)
-    ]
-    jldsave(file_name; file_content...)
+    # file_content    =   [
+    #     Symbol("Jet_$ii") => jet_list[ii]
+    #     for ii ∈ eachindex(jet_list)
+    # ]
+    # jldsave(file_name; file_content...)
+    jldopen(file_name, "w+") do f
+        @showprogress for ii ∈ eachindex(jet_list)
+            f["Jet_$ii"]    =   jet_list[ii]
+        end
+    end
+
     return  nothing
 end
 
